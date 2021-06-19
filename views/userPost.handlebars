@@ -1,0 +1,15 @@
+
+
+
+
+
+{{#each comments as |comment|}}
+<div class="row mb-4">
+    <div class="row mb-2">
+        <div class="col-md-4">{{comment.user.name}}</div>
+        <div class="col-md-4">{{comment.date_created}}</div>
+    </div>
+    <div class="row mb-2">{{comment.text}}</div>
+    
+</div>
+{{/each}}
