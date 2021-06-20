@@ -75,6 +75,7 @@ router.get('/newPost', withAuth,(req, res) => {
 router.get('/post/:id', withAuth, async (req, res)=>{
   //if id of user of post is the same as the logged in session user id, create a page to update&delete
   try {
+    //
     const postData = await Post.findByPk(req.params.id, {
       include: [
         {
@@ -107,7 +108,9 @@ router.get('/post/:id', withAuth, async (req, res)=>{
 
     const comments = commentData.map((comment) => comment.get({ plain: true }));
 
-    if(postData.get('id')== req.session.user_id){
+    console.log(postData.user_id);
+    console.log(req.session.user_id);
+    if(postData.get('user_id')== req.session.user_id){
       //this means you're looking at your own post
       res.render('userPost', {
         comments,
@@ -115,11 +118,14 @@ router.get('/post/:id', withAuth, async (req, res)=>{
         logged_in: req.session.logged_in 
       });
     }
-    res.render('post', { 
-      comments,
-      post, 
-      logged_in: req.session.logged_in 
-    });
+    else{
+      res.render('post', { 
+        comments,
+        post, 
+        logged_in: req.session.logged_in 
+      });
+    }
+    
   } catch (err) {
     res.status(500).json(err);
   }
